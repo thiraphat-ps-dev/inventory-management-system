@@ -2,6 +2,10 @@
 
 Welcome to the Inventory Management System! This system helps businesses keep track of their inventory, manage stock levels, and streamline their operations.
 
+## Screen Short
+![image](https://github.com/thiraphat-ps-dev/inventory-management-system/assets/57105447/957f397e-46dd-4472-a2f0-c386d30cff57)
+
+
 ## Features
 
 - **Product Management**: Add, edit, and delete products from the inventory.
