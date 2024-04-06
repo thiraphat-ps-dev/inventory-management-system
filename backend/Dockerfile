@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Start the backend server with nodemon
-CMD ["npx", "nodemon", "index.js"]
+CMD ["npx", "nodemon", "server.js"]

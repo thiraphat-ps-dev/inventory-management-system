@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from '@mui/system'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import useLogin from '../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 
 const LoginContainer = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -46,9 +48,20 @@ function Login() {
     resolver: yupResolver(schema),
   })
 
-  const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
-    console.log(data)
+  const navigate = useNavigate()
+
+  const useLoginHook = useLogin()
+
+  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
+    const { username, password } = data
+    useLoginHook.login(username, password)
   }
+
+  useEffect(() => {
+    if (useLoginHook.isLoggedIn) {
+      navigate('/')
+    }
+  }, [useLoginHook.isLoggedIn, navigate])
 
   return (
     <LoginContainer>
