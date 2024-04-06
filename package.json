@@ -1,0 +1,23 @@
+{
+  "name": "inventory-management-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiraphat-ps-dev/inventory-management-system.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thiraphat-ps-dev/inventory-management-system/issues"
+  },
+  "homepage": "https://github.com/thiraphat-ps-dev/inventory-management-system#readme",
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "prettier": "^3.2.5"
+  }
+}
