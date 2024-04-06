@@ -1,33 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { styled } from '@mui/system'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import useLogin from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
-
-const LoginContainer = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  minHeight: '100vh',
-  padding: 20,
-}))
-
-const LoginForm = styled('form')({
-  width: 600,
-  boxShadow: '0px 3px 15px rgba(0, 0, 0, 0.2)',
-  borderRadius: 10,
-  padding: 20,
-})
-
-const LoginTextField = styled(TextField)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-}))
+import useAuth from '../hooks/useAuth'
 
 type LoginFormValues = {
   username: string
@@ -39,7 +19,41 @@ const schema = yup.object().shape({
   password: yup.string().required('Password is required'),
 })
 
+const LoginContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  minHeight: '100vh',
+  padding: 20,
+  background: 'linear-gradient(45deg, hsla(210, 70%, 50%, 1) 30%, hsla(210, 70%, 70%, 1) 90%)',
+}))
+
+const LoginForm = styled('form')({
+  width: 400,
+  padding: 40,
+  borderRadius: 10,
+  boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.1)',
+  backgroundColor: 'white',
+})
+
+const LoginTitle = styled(Typography)(({ theme }) => ({
+  fontSize: '2rem',
+  fontWeight: 'bold',
+  marginBottom: theme.spacing(4),
+}))
+
+const LoginTextField = styled(TextField)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+}))
+
+const LoginButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+}))
+
 function Login() {
+  const navigate = useNavigate()
+  const { login, isLoggedIn } = useAuth()
+
   const {
     register,
     handleSubmit,
@@ -48,50 +62,44 @@ function Login() {
     resolver: yupResolver(schema),
   })
 
-  const navigate = useNavigate()
-
-  const useLoginHook = useLogin()
-
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     const { username, password } = data
-    useLoginHook.login(username, password)
+    login(username, password)
   }
 
   useEffect(() => {
-    if (useLoginHook.isLoggedIn) {
+    if (isLoggedIn) {
       navigate('/')
     }
-  }, [useLoginHook.isLoggedIn, navigate])
+  }, [isLoggedIn, navigate])
 
   return (
     <LoginContainer>
-      <Grid container justifyContent="center">
-        <LoginForm onSubmit={handleSubmit(onSubmit)}>
-          <Typography variant="h4" align="center" gutterBottom>
-            Login
-          </Typography>
-          <LoginTextField
-            {...register('username')}
-            variant="outlined"
-            label="Username"
-            fullWidth
-            error={!!errors.username}
-            helperText={errors.username?.message}
-          />
-          <LoginTextField
-            {...register('password')}
-            variant="outlined"
-            label="Password"
-            type="password"
-            fullWidth
-            error={!!errors.password}
-            helperText={errors.password?.message}
-          />
-          <Button type="submit" variant="contained" color="primary" fullWidth size="large">
-            Login
-          </Button>
-        </LoginForm>
-      </Grid>
+      <LoginForm onSubmit={handleSubmit(onSubmit)}>
+        <LoginTitle variant="h2" align="center">
+          Login
+        </LoginTitle>
+        <LoginTextField
+          {...register('username')}
+          variant="outlined"
+          label="Username"
+          fullWidth
+          error={!!errors.username}
+          helperText={errors.username?.message}
+        />
+        <LoginTextField
+          {...register('password')}
+          variant="outlined"
+          label="Password"
+          type="password"
+          fullWidth
+          error={!!errors.password}
+          helperText={errors.password?.message}
+        />
+        <LoginButton type="submit" variant="contained" color="primary" fullWidth size="large">
+          Login
+        </LoginButton>
+      </LoginForm>
     </LoginContainer>
   )
 }
