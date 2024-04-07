@@ -9,10 +9,15 @@ import {
   LOGOUT_FAILURE,
 } from '../actions/types'
 
+import Cookies from 'js-cookie' // import ไลบรารี js-cookie
+
 function* loginSaga(action: any): Generator<any, void, any> {
   try {
     const response = yield call(axios.post, 'http://localhost:4000/login', action.payload)
     yield put({ type: LOGIN_SUCCESS, payload: response.data })
+
+    // หลังจากเข้าสู่ระบบสำเร็จ จะเก็บ accessToken เข้า cookies
+    Cookies.set('accessToken', response.data.token)
   } catch (error: any) {
     yield put({ type: LOGIN_FAILURE, payload: error.message })
   }

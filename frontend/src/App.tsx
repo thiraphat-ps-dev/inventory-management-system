@@ -6,14 +6,19 @@ import Home from './pages/Home'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
 import useAuth from './hooks/useAuth'
+import Cookies from 'js-cookie' // import ไลบรารี js-cookie
 
 function App() {
   const { isLoggedIn } = useAuth()
   const [open, setOpen] = useState(false)
 
+  const accessToken = Cookies.get('accessToken')
+
   useEffect(() => {
     // เช็คสถานะการเข้าสู่ระบบทุกครั้งที่มีการเปลี่ยนแปลงในตัวแปร isLoggedIn
-    isLoggedIn && setOpen(true)
+    if (isLoggedIn) {
+      setOpen(true)
+    }
   }, [isLoggedIn])
 
   const handleOnClose = () => {
@@ -25,11 +30,11 @@ function App() {
       <div className="App">
         <Routes>
           {/* เพิ่มเงื่อนไขการเข้าถึงหน้า Home */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={accessToken ? <Navigate to="/" /> : <Login />} />
           <Route
             path="/"
             element={
-              isLoggedIn ? (
+              accessToken ? (
                 <Home />
               ) : (
                 // ถ้าไม่ได้เข้าสู่ระบบให้เด้งไปยังหน้า Login
