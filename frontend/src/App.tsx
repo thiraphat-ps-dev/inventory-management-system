@@ -7,6 +7,7 @@ import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
 import useAuth from './hooks/useAuth'
 import Cookies from 'js-cookie' // import ไลบรารี js-cookie
+import Navbar from './components/Navbar'
 
 function App() {
   const { isLoggedIn } = useAuth()
@@ -28,6 +29,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        {accessToken && <Navbar />}
         <Routes>
           {/* เพิ่มเงื่อนไขการเข้าถึงหน้า Home */}
           <Route path="/login" element={accessToken ? <Navigate to="/" /> : <Login />} />
